@@ -1,3 +1,9 @@
 out.xdmf
 out.h5
 __pycache__
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.pdf
+*.synctex.gz
