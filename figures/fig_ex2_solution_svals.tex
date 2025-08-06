@@ -1,0 +1,36 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+               group style={ 
+                   group size=2 by 2,
+                   horizontal sep=2.0cm,
+                   vertical sep=1.75cm,
+               },
+               width=0.5\textwidth,
+               mesh/ordering=x varies,
+               view/h=70,
+               view/v=40,
+               colormap/viridis,
+           ]
+           \nextgroupplot[
+               xlabel=$x$,
+               ylabel=$t$,
+           ]
+           \addplot3 [surf, shader=faceted, ultra thin] table {../data/ex2_solution/solution.dat};
+            \nextgroupplot[
+                ymode=log,
+                xlabel=$r$,
+                ymax=10,
+                ymin=1e-17,
+                ytick distance=1e3,
+            ]
+            \foreach \i in {0,1,...,9} {
+                \addplot+[]
+                    table[x expr={\coordindex + 1}, y index=\i]{../data/ex2_neu_svals_s10.dat};
+            }
+        \end{groupplot}
+   \end{tikzpicture}
+\end{document}

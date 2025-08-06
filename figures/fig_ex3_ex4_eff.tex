@@ -1,0 +1,77 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \def\tol{1e-13}
+
+        \pgfplotstableread{../data/ex3_rsvd_p1q0_s10_max_errs.dat}\excerrs
+        \pgfplotstableread{../data/ex3_rsvd_p1q0_s10_effs.dat}\exceffs
+        \pgfplotsinvokeforeach {0,1,...,10} {
+            \pgfplotstablecreatecol[copy column from table={\excerrs}{[index] #1}]{e#1}{\exceffs}
+            \pgfplotstablecreatecol[
+                create col/assign/.code={\getnextrow{e#1}\val\pgfkeyslet{/pgfplots/table/create col/next content}\val},
+                create col/assign last/.code={\getthisrow{e#1}\val\pgfkeyslet{/pgfplots/table/create col/next content}\val}
+            ]{en#1}{\exceffs}
+        }
+
+        \pgfplotstableread{../data/ex4_rsvd_p1q0_s25_max_errs.dat}\exderrs
+        \pgfplotstableread{../data/ex4_rsvd_p1q0_s25_effs.dat}\exdeffs
+        \pgfplotsinvokeforeach {0,1,...,3} {
+            \pgfplotstablecreatecol[copy column from table={\exderrs}{[index] #1}]{e#1}{\exdeffs}
+            \pgfplotstablecreatecol[
+                create col/assign/.code={\getnextrow{e#1}\val\pgfkeyslet{/pgfplots/table/create col/next content}\val},
+                create col/assign last/.code={\getthisrow{e#1}\val\pgfkeyslet{/pgfplots/table/create col/next content}\val}
+            ]{en#1}{\exdeffs}
+        }
+
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 1,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                ymode=log,
+                xtick distance=1,
+                ytick distance=10,
+                width=0.5\textwidth,
+                xlabel=$k$,
+                grid=major,
+            ]
+            \nextgroupplot[
+                title={Experiment 3},
+                xmax=9,
+                ymin=1e-3,
+                ytick distance=10,
+                legend to name=first,
+                legend style={legend columns=6},
+                ylabel=$\eta^k$
+            ]
+            \foreach \i in {0,1,...,10} {
+                \addplot+ [
+                    y filter/.expression={\thisrow{en\i} >= \tol ? nan : ln(y)}, dashed, forget plot]
+                    table[x expr=\coordindex, y index=\i]{\exceffs};
+                \addplot+ [y filter/.expression={\thisrow{e\i} < \tol ? nan : ln(y)}]
+                    table[x expr=\coordindex, y index=\i]{\exceffs};
+                \addlegendentryexpanded{$R=\i$}
+            }
+            \coordinate (c1) at (rel axis cs:0,1);
+            \nextgroupplot[
+                title={Experiment 4},
+                xmax=8,
+                ymin=1e-3,
+            ]
+            \foreach \i in {0,1,...,3} {
+                \addplot+ [
+                    y filter/.expression={\thisrow{en\i} >= \tol ? nan : ln(y)}, dashed, forget plot]
+                    table[x expr=\coordindex, y index=\i]{\exdeffs};
+                \addplot+ [y filter/.expression={\thisrow{e\i} < \tol ? nan : ln(y)}]
+                    table[x expr=\coordindex, y index=\i]{\exdeffs};
+            }
+            \coordinate (c2) at (rel axis cs:1,1);
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+            \node[below] at (c3 |- current bounding box.south)
+          {\pgfplotslegendfromname{first}};
+    \end{tikzpicture}
+\end{document}

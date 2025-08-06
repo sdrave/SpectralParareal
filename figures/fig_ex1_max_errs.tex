@@ -1,0 +1,59 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 2,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                ymode=log,
+                ymax=1e4,
+                ymin=1e-16,
+                ytick distance=1e4,
+                xtick distance=2,
+                xmax=10,
+                width=0.5\textwidth,
+            ]
+            \nextgroupplot[
+                title={Dirichlet, $G_n = 0$, $T=2^l$},
+                ylabel=$\ell^2$-error,
+            ]
+            \foreach \i in {0,1,...,3} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_dir_s10_max_errs.dat};
+            }
+           \coordinate (c1) at (rel axis cs:0,1);
+            \nextgroupplot[
+                title={Neumann, $G_n = 0$, $T=2^l$},
+            ]
+            \foreach \i in {0,1,...,3} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_neu_s10_max_errs.dat};
+            }
+           \coordinate (c2) at (rel axis cs:1,1);
+            \nextgroupplot[
+                title={Neumann, $\operatorname{rank}(G_n) = 1$, $T=2^l$},
+                xlabel=$k$,
+                ylabel=$\ell^2$ error,
+            ]
+            \foreach \i in {0,1,...,3} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_neu_r1_s10_max_errs.dat};
+            }
+            \nextgroupplot[
+                title={Dirichlet, $\operatorname{rank}(G_n) = l$, $T=1$},
+                xlabel=$k$,
+                legend to name=first,
+                legend style={legend columns=10},
+            ]
+            \foreach \i in {0,1,...,3} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_dir_fou_s10_max_errs.dat};
+                \addlegendentryexpanded{$l=\i$}
+            }
+            \addplot[dashed, semithick] table[x expr=\coordindex, y index=1]{../data/ex1_dir_euler_s10_max_errs.dat};
+            \addlegendentry{Euler}
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+        \node[below] at (c3 |- current bounding box.south) {\pgfplotslegendfromname{first}};
+    \end{tikzpicture}
+\end{document}

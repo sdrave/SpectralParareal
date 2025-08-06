@@ -1,0 +1,69 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 2,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                xtick distance=2,
+                ymode=log,
+                ymax=1e3,
+                ymin=1e-16,
+                ytick distance=1e3,
+                width=0.5\textwidth,
+            ]
+            \nextgroupplot[
+                title={Fourier modes},
+                ylabel=$\ell^2$ error,
+                legend to name=first,
+                legend style={legend columns=10},
+            ]
+            \foreach \i in {0,1,...,5} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex2_neu_fou_s10_max_errs.dat};
+                \addlegendentryexpanded{$R=\i$}
+            }
+            \addplot[black, dashed]
+                table[x expr=\coordindex, y index=0]{../data/ex2_neu_euler_s10_max_errs.dat};
+            \addlegendentryexpanded{Euler}
+            \coordinate (c1) at (rel axis cs:0,1);
+
+            \nextgroupplot[
+                title={SVD},
+            ]
+            \foreach \i in {0,1,...,5} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex2_neu_svd_s10_max_errs.dat};
+            }
+            \addplot[black, dashed]
+                table[x expr=\coordindex, y index=0]{../data/ex2_neu_euler_s10_max_errs.dat};
+            \coordinate (c2) at (rel axis cs:1,1);
+
+            \nextgroupplot[
+                title={randmized SVD ($p=0$)},
+                xlabel=$k$,
+                ylabel=$\ell^2$-error,
+            ]
+            \foreach \i in {0,1,...,5} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex2_neu_rsvd_p0q0_s10_max_errs.dat};
+            }
+            \addplot[black, dashed]
+                table[x expr=\coordindex, y index=0]{../data/ex2_neu_euler_s10_max_errs.dat};
+
+            \nextgroupplot[
+                title={randomized SVD ($p=1$)},
+                xlabel=$k$,
+            ]
+            \foreach \i in {0,1,...,5} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex2_neu_rsvd_p1q0_s10_max_errs.dat};
+            }
+            \addplot[black, dashed]
+                table[x expr=\coordindex, y index=0]{../data/ex2_neu_euler_s10_max_errs.dat};
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+        \node[below, xshift=-0.5cm] at (c3 |- current bounding box.south)
+          {\pgfplotslegendfromname{first}};
+    \end{tikzpicture}
+\end{document}

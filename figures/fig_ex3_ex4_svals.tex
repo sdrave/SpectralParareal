@@ -1,0 +1,42 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 1,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                ymode=log,
+                width=0.5\textwidth,
+                ytick distance=10^1,
+            ]
+            \nextgroupplot[
+                title={Experiment 3},
+                xlabel=$r$,
+                ylabel={singular value},
+                xtick distance=5,
+                ymax=1e0,
+                ymin=1e-9,
+            ]
+            \foreach \i in {0,1,...,9} {
+                \addplot+[mark=, semithick]
+                    table[x expr={\coordindex + 1}, y index=\i]{../data/ex3_svals_s10.dat};
+            }
+            \nextgroupplot[
+                xlabel=$r$,
+                title={Experiment 4},
+                ymax=1e-1,
+                ymin=1e-8,
+                xtick distance=1,
+                ytick distance=10^1,
+            ]
+            \foreach \i in {0,1,...,24} {
+                \addplot+[]
+                    table[x expr={\coordindex + 1}, y index=\i]{../data/ex4_svals_s25.dat};
+            }
+        \end{groupplot}
+    \end{tikzpicture}
+\end{document}

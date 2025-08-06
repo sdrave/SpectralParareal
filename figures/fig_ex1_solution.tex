@@ -1,0 +1,38 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+               group style={ 
+                   group size=2 by 2,
+                   horizontal sep=1.5cm,
+                   vertical sep=1.75cm,
+               },
+               xlabel=$x$,
+               ylabel=$t$,
+               width=0.5\textwidth,
+               mesh/ordering=x varies,
+               view/h=70,
+               view/v=40,
+               colormap/viridis,
+           ]
+           \nextgroupplot[
+               title={Dirichlet, $T = 1$},
+           ]
+           \addplot3 [surf, shader=faceted, ultra thin] table {../data/ex1_solution/dir_k0.dat};
+           \nextgroupplot[
+               title={Dirichlet, $T = 2$},
+           ]
+           \addplot3 [surf, shader=faceted, ultra thin] table {../data/ex1_solution/dir_k1.dat};
+           \nextgroupplot[
+               title={Neumann, $T = 1$},
+           ]
+           \addplot3 [surf, shader=faceted, ultra thin] table {../data/ex1_solution/neu_k0.dat};
+           \nextgroupplot[
+               title={Neumann, $T = 2$},
+           ]
+           \addplot3 [surf, shader=faceted, ultra thin] table {../data/ex1_solution/neu_k1.dat};
+        \end{groupplot}
+   \end{tikzpicture}
+\end{document}

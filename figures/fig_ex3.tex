@@ -1,0 +1,48 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 2,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                ymode=log,
+                width=0.5\textwidth,
+                xlabel=$k$,
+                xtick distance=1,
+                ytick distance=10^2,
+                ymax=10^3,
+                ymin=1e-15,
+            ]
+            \nextgroupplot[
+                title={randomized SVD ($p=1$)},
+                legend to name=first,
+                legend style={legend columns=6},
+                ylabel=$\ell^2$-error,
+            ]
+            \foreach \i in {0,1,...,10} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex3_rsvd_p1q0_s10_max_errs.dat};
+                \addlegendentryexpanded{$R=\i$}
+            }
+            \addplot[black, dashed, semithick]
+                table[x expr=\coordindex, y index=0]{../data/ex3_euler_s10_max_errs.dat};
+            \addlegendentryexpanded{Euler}
+            \coordinate (c1) at (rel axis cs:0,1);
+            \nextgroupplot[
+                title={SVD},
+            ]
+            \foreach \i in {0,1,...,10} {
+                \addplot table[x expr=\coordindex, y index=\i]{../data/ex3_svd_s10_max_errs.dat};
+            }
+            \addplot[black, dashed, semithick]
+                table[x expr=\coordindex, y index=0]{../data/ex3_euler_s10_max_errs.dat};
+            \coordinate (c2) at (rel axis cs:1,1);
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+        \node[below] at (c3 |- current bounding box.south)
+          {\pgfplotslegendfromname{first}};
+    \end{tikzpicture}
+\end{document}

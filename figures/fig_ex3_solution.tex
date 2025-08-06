@@ -1,0 +1,49 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+               group style={ 
+                   group size=2 by 2,
+                   horizontal sep=1.25cm,
+                   vertical sep=1.75cm,
+               },
+               width=0.45\textwidth,
+               xmin=0,
+               xmax=1,
+               ymin=0,
+               ymax=1,
+               point meta min=-7,
+               point meta max=11,
+               colormap/hot2,
+           ]
+           \nextgroupplot[title={$t=0.25$}, ylabel=$y$]
+           \addplot [patch, shader=interp, patch table=../data/ex3_solution/subentities.dat]
+               table[point meta=\thisrowno{2}] {../data/ex3_solution/points0_25.dat};
+
+           \nextgroupplot[
+               title={$t=0.5$},
+               colorbar right,
+               every colorbar/.append style={
+                   height=2*\pgfkeysvalueof{/pgfplots/parent axis height}+\pgfkeysvalueof{/pgfplots/group/vertical sep},
+                   width=0.5cm,
+               }
+            ]
+           \addplot [
+               patch, 
+               shader=interp, 
+               patch table=../data/ex3_solution/subentities.dat,
+           ]
+               table[point meta=\thisrowno{2}] {../data/ex3_solution/points0_50.dat};
+
+           \nextgroupplot[ title={$t=0.75$}, ylabel=$y$, xlabel=$x$ ]
+           \addplot [patch, shader=interp, patch table=./../data/ex3_solution/subentities.dat]
+               table[point meta=\thisrowno{2}] {../data/ex3_solution/points0_75.dat};
+
+           \nextgroupplot[title={$t=1.0$}, xlabel=$x$]
+           \addplot [patch, shader=interp, patch table=./../data/ex3_solution/subentities.dat]
+               table[point meta=\thisrowno{2}] {../data/ex3_solution/points1_00.dat};
+        \end{groupplot}
+   \end{tikzpicture}
+\end{document}

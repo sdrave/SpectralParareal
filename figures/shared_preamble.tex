@@ -1,0 +1,22 @@
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{amsmath,amsfonts,amsopn}
+
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{colorbrewer}
+\pgfplotsset{
+    compat=1.16,
+    every tick label/.append style={font=\small},
+    legend style={
+        font=\small,
+        /tikz/every even column/.append style={column sep=0.2cm},
+    },
+    cycle list/Set1,
+    cycle multiindex* list={
+        mark list*\nextlist
+        Set1\nextlist
+    },
+    every axis plot/.append style={semithick, mark options={scale=0.75}},
+}

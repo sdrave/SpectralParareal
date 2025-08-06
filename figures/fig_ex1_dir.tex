@@ -1,0 +1,60 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{groupplot}[
+               group style={ 
+                   group size=2 by 1,
+                   horizontal sep=1.5cm,
+                   vertical sep=1.5cm,
+               },
+               ymode=log,
+               width=0.5\textwidth,
+               ytick distance=1e4,
+               ymax=1e4,
+               ymin=1e-16,
+           ]
+           \nextgroupplot[
+               ylabel=$\ell^2$-error,
+               legend to name=first,
+               legend style={legend columns=10},
+               title={$G_n = 0$, $T = 1$},
+               xtick distance=0.25,
+           ]
+           \addlegendimage{empty legend}
+           \addlegendentry{$k=$\ }
+           \foreach \i in {1,2,...,9} {
+               \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k0.dat};
+                \pgfmathparse{int(\i - 1)}
+                \addlegendentryexpanded{ \pgfmathresult }
+           }
+           \coordinate (c1) at (rel axis cs:0,1);
+           \nextgroupplot[
+               title={$G_n = 0$, $T = 2$},
+               xtick distance=0.5,
+           ]
+           \foreach \i in {1,2,...,9} {
+               \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k1.dat};
+           }
+           \coordinate (c2) at (rel axis cs:1,1);
+           % \nextgroupplot[
+           %     title={$T = 4$},
+           %     xlabel=$t$,
+           %     ylabel=$\ell^2$-error,
+           % ]
+           % \foreach \i in {1,2,...,9} {
+           %     \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k2.dat};
+           % }
+           % \nextgroupplot[
+           %     title={$T = 8$},
+           %     xlabel=$t$,
+           % ]
+           % \foreach \i in {1,2,...,9} {
+           %     \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k3.dat};
+           % }
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+        \node[below] at (c3 |- current bounding box.south) {\pgfplotslegendfromname{first}};
+   \end{tikzpicture}   
+\end{document}

@@ -1,0 +1,92 @@
+\documentclass[tikz, border=0cm]{standalone}
+\input{shared_preamble}
+
+\definecolor{Set1A}{HTML}{E41A1C}
+\definecolor{Set1B}{HTML}{377EB8}
+\definecolor{Set1C}{HTML}{4DAF4A}
+\definecolor{Set1D}{HTML}{984EA3}
+
+\begin{document}
+    \begin{tikzpicture}
+        \pgfplotstableread{../data/ex4_rank0_solve_s25_time.dat}{\solvetimes}
+        \pgfplotstablegetelem{0}{[index]0}\of{\solvetimes}
+        \edef\solvetime{\pgfplotsretval}
+        \begin{groupplot}[
+                group style={ 
+                    group size=2 by 1,
+                    horizontal sep=1.5cm,
+                    vertical sep=1.5cm,
+                },
+                width=0.5\textwidth,
+                ymode=log,
+                ymax=1e0,
+                ymin=1e-16,
+                ytick distance=1e2,
+                xtick distance=1,
+                xmajorgrids,
+                ymajorgrids,
+                xlabel={speedup},
+            ]
+            \nextgroupplot[
+                title={randomized SVD ($p=0$)},
+                ylabel=$\ell^2$-error,
+                legend to name=first,
+                legend style={legend columns=8},
+            ]
+            \fill[orange,very nearly transparent] (1,1 |- {rel axis cs:0,0}) -- (1,1 |- {rel axis cs:0,1})
+                        -- (rel axis cs:0,1) -- (rel axis cs:0,0);
+            \draw[gray] (1,1 |- {rel axis cs:0,0}) -- (1,1 |- {rel axis cs:0,1});
+            \addplot[
+                scatter, 
+                only marks,
+                semithick,
+                scatter src=explicit symbolic,
+                scatter/classes={
+                    a={mark=*, color=Set1A},
+                    b={mark=square*, color=Set1B},
+                    c={mark=triangle*, color=Set1C},
+                    d={mark=halfsquare*, color=Set1D}
+                },
+            ]
+                table[x expr={\solvetime / \thisrowno{0}}, y index=1, meta index=2]{../data/ex4_rsvd_p0q0_s25_errs_vs_time.dat};
+            \addplot[
+                only marks,
+                semithick,
+                mark=x,
+            ]
+                table[x expr={\solvetime / \thisrowno{0}}, y index=1]{../data/ex4_euler_s25_errs_vs_time.dat};
+            \legend{$R=0$, $R=1$, $R=2$, $R=3$}
+            \addlegendentry{Euler}
+            \coordinate (c1) at (rel axis cs:0,1);
+            \nextgroupplot[
+                title={randomized SVD ($p=1$)},
+            ]
+            \fill[orange,very nearly transparent] (1,1 |- {rel axis cs:0,0}) -- (1,1 |- {rel axis cs:0,1})
+                        -- (rel axis cs:0,1) -- (rel axis cs:0,0);
+            \draw[gray] (1,1 |- {rel axis cs:0,0}) -- (1,1 |- {rel axis cs:0,1});
+            \addplot[
+                scatter, 
+                only marks,
+                semithick,
+                scatter src=explicit symbolic,
+                scatter/classes={
+                    a={mark=*, color=Set1A},
+                    b={mark=square*, color=Set1B},
+                    c={mark=triangle*, color=Set1C},
+                    d={mark=halfsquare*, color=Set1D}
+                },
+            ]
+                table[x expr={\solvetime / \thisrowno{0}}, y index=1, meta index=2]{../data/ex4_rsvd_p1q0_s25_errs_vs_time.dat};
+            \addplot[
+                only marks,
+                semithick,
+                mark=x,
+            ]
+                table[x expr={\solvetime / \thisrowno{0}}, y index=1]{../data/ex4_euler_s25_errs_vs_time.dat};
+            \coordinate (c2) at (rel axis cs:1,1);
+        \end{groupplot}
+        \coordinate (c3) at ($(c1)!.5!(c2)$);
+            \node[below] at (c3 |- current bounding box.south)
+          {\pgfplotslegendfromname{first}};
+    \end{tikzpicture}
+\end{document}
