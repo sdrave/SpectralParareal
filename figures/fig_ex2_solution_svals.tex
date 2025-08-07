@@ -6,7 +6,7 @@
         \begin{groupplot}[
                group style={ 
                    group size=2 by 2,
-                   horizontal sep=2.0cm,
+                   horizontal sep=2.5cm,
                    vertical sep=1.75cm,
                },
                width=0.5\textwidth,
@@ -26,6 +26,7 @@
                 ymax=10,
                 ymin=1e-17,
                 ytick distance=1e3,
+                ylabel={singular value},
             ]
             \foreach \i in {0,1,...,9} {
                 \addplot+[]

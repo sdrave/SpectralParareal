@@ -18,7 +18,7 @@
             ]
             \nextgroupplot[
                 title={Fourier modes},
-                ylabel=$\ell^2$ error,
+                ylabel=$\ell^2$-$\ell^\infty$-error,
                 legend to name=first,
                 legend style={legend columns=10},
             ]
@@ -44,7 +44,7 @@
             \nextgroupplot[
                 title={randmized SVD ($p=0$)},
                 xlabel=$k$,
-                ylabel=$\ell^2$-error,
+                ylabel=$\ell^2$-$\ell^\infty$-error,
             ]
             \foreach \i in {0,1,...,5} {
                 \addplot table[x expr=\coordindex, y index=\i]{../data/ex2_neu_rsvd_p0q0_s10_max_errs.dat};

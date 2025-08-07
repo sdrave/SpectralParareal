@@ -21,7 +21,7 @@
                 title={randomized SVD ($p=1$)},
                 legend to name=first,
                 legend style={legend columns=6},
-                ylabel=$\ell^2$-error,
+                ylabel=$\ell^2$-$\ell^\infty$-error,
             ]
             \foreach \i in {0,1,...,10} {
                 \addplot table[x expr=\coordindex, y index=\i]{../data/ex3_rsvd_p1q0_s10_max_errs.dat};

@@ -19,7 +19,7 @@
             ]
             \nextgroupplot[
                 title={Dirichlet, $G_n = 0$, $T=2^l$},
-                ylabel=$\ell^2$-error,
+                ylabel=$\ell^2$-$\ell^\infty$-error,
             ]
             \foreach \i in {0,1,...,3} {
                 \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_dir_s10_max_errs.dat};
@@ -35,7 +35,7 @@
             \nextgroupplot[
                 title={Neumann, $\operatorname{rank}(G_n) = 1$, $T=2^l$},
                 xlabel=$k$,
-                ylabel=$\ell^2$ error,
+                ylabel=$\ell^2$-$\ell^\infty$-error,
             ]
             \foreach \i in {0,1,...,3} {
                 \addplot table[x expr=\coordindex, y index=\i]{../data/ex1_neu_r1_s10_max_errs.dat};
