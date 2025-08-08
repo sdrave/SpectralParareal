@@ -22,5 +22,3 @@ for err_path in BASE_PATH.glob('*_max_errs.dat'):
                 err = errs[i, j]
                 time = times[i+1, j]
                 print(f'{time:.4e}', f'{err:.4e}', chr(ord('a') + j), file=f)
-                # if err < 1e-14:
-                #     break

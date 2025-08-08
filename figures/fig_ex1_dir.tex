@@ -38,21 +38,6 @@
                \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k1.dat};
            }
            \coordinate (c2) at (rel axis cs:1,1);
-           % \nextgroupplot[
-           %     title={$T = 4$},
-           %     xlabel=$t$,
-           %     ylabel=$\ell^2$-error,
-           % ]
-           % \foreach \i in {1,2,...,9} {
-           %     \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k2.dat};
-           % }
-           % \nextgroupplot[
-           %     title={$T = 8$},
-           %     xlabel=$t$,
-           % ]
-           % \foreach \i in {1,2,...,9} {
-           %     \addplot+[mark=] table[x index=0, y index=\i]{../data/ex1_dir_s10_errs_k3.dat};
-           % }
         \end{groupplot}
         \coordinate (c3) at ($(c1)!.5!(c2)$);
         \node[below] at (c3 |- current bounding box.south) {\pgfplotslegendfromname{first}};

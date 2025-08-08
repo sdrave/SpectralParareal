@@ -1,5 +1,5 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
 import numpy as np
 
@@ -28,9 +28,9 @@ for err_path in BASE_PATH.glob('*rsvd_*_max_errs.dat'):
     max_bounds_rsvd = np.zeros((R, K))
     for r in range(R):
         delta = np.max(svals[0, :])
-        delta_rsvd = np.max(rsvd_svals[r][0, :]) # if rsvd_svals[r].shape[0] > 0 else np.nan
+        delta_rsvd = np.max(rsvd_svals[r][0, :])
         eps = np.max(svals[r, :])
-        eps_rsvd = np.max(rsvd_svals[r][r, :]) # if rsvd_svals[r].shape[0] > r else np.nan
+        eps_rsvd = np.max(rsvd_svals[r][r, :])
         for k in range(K):
             max_bounds[r, k] = eps / (1 - delta) * max_updates[r, k]
             max_bounds_rsvd[r, k] = eps_rsvd / (1 - delta_rsvd) * max_updates[r, k]
